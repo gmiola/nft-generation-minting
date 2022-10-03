@@ -1,0 +1,20 @@
+
+.container-log{
+    position: relative;
+    height: 80%;
+    width: 100vw;
+}
+.login{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.mat-flat-button{
+    width: 300px;
+    height: 60px;
+    font-size: 14pt;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}

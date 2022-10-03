@@ -1,0 +1,30 @@
+.preview {
+  max-width: 150px;
+  border: solid;
+  border-width: 1px;
+  border-color: rgb(103, 108, 111);
+  margin: 2px;
+}
+
+.final-preview {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: space-between;
+}
+
+.container-selection {
+  margin: 20px;
+  padding: 10px;
+
+}
+
+.last {
+  position: absolute;
+  left: 50%;
+}
+
+.choose-files {
+  display: block;
+  height: 60px;
+}
