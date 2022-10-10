@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEvent, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ObjToText } from '../obj-to-text';
+import { arrayBuffer } from 'stream/consumers';
 
 @Injectable({
   providedIn: 'root'
@@ -36,15 +37,27 @@ export class FileUploadService {
     return this.http.get('http://localhost:8080/files');
   }
 
-  generateNFTs(address: string): Observable<any> {
+/*   generateNFTs(address: string): Observable<any> {
     let queryParams = new HttpParams();
     queryParams = queryParams.append("address",address);
     return this.http.get('http://localhost:8080/generate', {params:queryParams});
+  } */
+
+  generateNFTs(address: string, objToText: ObjToText): Observable<any> {
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("address",address);
+    const req = new HttpRequest('POST', 'http://localhost:8080/generate', objToText,
+    {
+      params : queryParams,
+      responseType: 'json'
+    });
+
+    return this.http.request(req);
   }
 
   configure(objToText: ObjToText): Observable<any> {
     
-    const req = new HttpRequest<ObjToText>('POST', 'http://localhost:8080/upload', objToText);
+    const req = new HttpRequest<ObjToText>('POST', 'http://localhost:8080/configure', objToText);
     return this.http.request(req); 
   }
 }

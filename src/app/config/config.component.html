@@ -7,7 +7,7 @@
         <label for="num-nft">Number of NFTs to generate</label>
         <input id="num-nft" type="number" formControlName="numNFTtoGenerate">
 
-        <label for="layers">Layers names (comma separated list)</label>
+        <label for="layers">Layers names (comma separated list, the first layer must be the base layer)</label>
         <input id="layers" type="text" formControlName="layers">
 
     </form>
@@ -41,7 +41,7 @@
             
                 <li><b>Number of layers:</b> how many layers will compose your NFTs</li>
                 <li><b>Number of NFTs to generate:</b> how many NFTs will be generated, upper bounded by the maximum number of possible permutations of the input images</li>
-                <li><b>Layer names:</b> a comma separated list of your layers names, i.e. the layers' directories names have no constraints, unlike the .png files they contain</li>
+                <li><b>Layer names:</b> a comma separated list of your layers names, the first must be the base layer i.e. the layers' directories names have no constraints, unlike the .png files they contain</li>
             
         <br>
         <li>All the layers must be in separate directories where each part has always the same name and a progressive number, like hair1, hair2, hair3 and so on.</li>

@@ -12,7 +12,7 @@
                 multiple 
                 (change)="selectFiles($event, layer)"
                 #upload />
-            <button (click)="upload.click()">Choose files</button> 
+            <button mat-raised-button class= "upload-button" (click)="upload.click()">Choose files</button> 
           
         </div>
         
@@ -28,10 +28,12 @@
           <button mat-button matStepperPrevious>
             Previous
           </button>
-          <button mat-button matStepperNext [disabled]="!selectedFiles" (click)="uploadFiles(layer); generable=true">
+          <button mat-button matStepperNext [disabled]="!selectedFiles" (click)="uploadFiles(layer); sendConfig(); generable=true">
             Upload
           </button>
-          <button mat-button color="primary" (click)="sendConfig()" [disabled]="!generable" [routerLink]= "'/generate'">
+          <button mat-button color="primary" [disabled]="!generable" [routerLink]= "'/generate'" [state]="{
+            data: {tempConfigObj}
+          }">    
             Go to generation
           </button>
         
@@ -42,20 +44,39 @@
         
       </div>
     </mat-step>
-    
-      
-    
-    
-   
   </mat-horizontal-stepper>
+
   <div>
     <img *ngFor='let preview of previews' [src]="preview" class="preview">
   </div>
+  <div *ngIf="weightForms.controls.length >=1" style="margin-bottom: 0%; font-weight: 500;">
+    Weights:
+  </div>
+  <div [formGroup]="paramGroup">
+    <div formArrayName="weightForms">
+      <div class="formina" *ngFor="let weight of weightForms.controls; let i=index">
+     
+       <!--  <label for="weight-{{ i }}">weight:</label> -->
+        <input id="weight-{{ i }}" type="number" [formControlName]="i">
+      </div>
+    </div>
+  </div>
+  
   <div *ngIf="message.length" role="alert">
     <ul *ngFor="let msg of message; let i = index">
       <li style="font-size:small">{{ msg }}</li>
     </ul>
+    
   </div>
+
+<!-- <div formArrayName="weightForms">
+  <div *ngFor="let weight of weightForms.controls; let i=index">
+ 
+    <label for="weight-{{ i }}">weight:</label>
+    <input id="weight-{{ i }}" type="number" [formControlName]="i">
+  </div>
+
+</div> -->
   
   
   

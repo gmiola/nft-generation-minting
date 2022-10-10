@@ -1,10 +1,30 @@
 .preview {
   max-width: 150px;
   border: solid;
-  border-width: 1px;
+  border-width: 3px;
   border-color: rgb(103, 108, 111);
   margin: 2px;
+  display: inline;
+  
 }
+
+.formina {
+  display: inline;
+  max-width: 130px;
+}
+
+.formgroup {
+  max-width: 150px;
+  display:inline;
+  /* display: flex;
+  flex-direction: row; */
+}
+
+input {
+  width:150px;
+  margin:2px;
+}
+
 
 .final-preview {
   display: flex;
@@ -26,5 +46,8 @@
 
 .choose-files {
   display: block;
-  height: 60px;
+  height: 55px;
+}
+.upload-button{
+  width: 200px;
 }

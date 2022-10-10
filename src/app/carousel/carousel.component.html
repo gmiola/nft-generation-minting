@@ -3,39 +3,23 @@
     Start generation
   </button>
 
-  <button class="gen-button" mat-flat-button color="secondary" [routerLink]="'/images-selection'">
+  <button class="gen-button" mat-flat-button color="secondary" (click)="goBack()">
     Back
   </button>
 </div>
-  <!-- <mat-card class="example-card">
-    <mat-card-header>
-      <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>Shiba Inu</mat-card-title>
-      <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-    </mat-card-header>
-    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-    <mat-card-content>
-      <p>
-        Result image
-      </p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-button>LIKE</button>
-      <button mat-button>SHARE</button>
-    </mat-card-actions>
-</mat-card> -->
 
 
-  <div class="card-header"  *ngIf="imageInfos | async">Results</div>
+<div class="card-header"  *ngIf="completed">Results
   <div class="final-preview">
-    <ul class="list-group list-group-flush" *ngFor="let image of imageInfos |async">
+    <ul class="list-group list-group-flush" *ngFor="let image of images.body">
       <li class="list-group-item">
         <p><a href="{{ image.url }}">{{ image.name }}</a></p>
         <img src="{{ image.url }}" alt="{{ image.name }}" height="100px"/>
       </li>
     </ul>
 
-  </div>
+  </div> 
+</div>
   <!-- <div *ngIf="imageInfos |async">
 <div  *ngFor="let image of images">
     <img src="{{ image.url }}" alt="{{ image.name }}" height="80px" />

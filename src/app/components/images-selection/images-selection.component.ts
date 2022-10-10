@@ -7,6 +7,8 @@ import { AppComponent } from 'src/app/app.component';
 import { NumberFormatStyle } from '@angular/common';
 import { ThisReceiver } from '@angular/compiler';
 import { ObjToText } from 'src/app/obj-to-text';
+import { FormArray } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 
 
 @Component({
@@ -15,20 +17,30 @@ import { ObjToText } from 'src/app/obj-to-text';
   styleUrls: ['./images-selection.component.css']
 })
 export class ImagesSelectionComponent implements OnInit {
-  @Input()connected: boolean;  
+
   selectedFiles?: FileList;
-  progressInfos: any[] = [];
   message: string[] = [];
   previews: string[] = [];
   generable: boolean = false;
+
+  //for obj-to-txt (json) configuration construction
   numLayers: number;
   numNFTtoGenerate: number;
-  //layers: string[] = ['Ears','Eyes','Hair','Mouth','Pace'];
   layers: string[] = [];
   cardinalities: Map<string, number> = new Map<string, number>;
+  weights: Map<string, number[]> = new Map<string, number[]>;
+  tempConfigObj: ObjToText = new ObjToText(); 
+
+  //form for parameters (weights)
+  paramGroup = this.fb.group({weightForms: this.fb.array(
+    [])
+  });
 
 
-  constructor(private uploadService: FileUploadService, private router: Router) { }
+  constructor(
+    private uploadService: FileUploadService, 
+    private router: Router,
+    private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.generable=false;
@@ -46,9 +58,9 @@ export class ImagesSelectionComponent implements OnInit {
 
   selectFiles(event: any, layer: string): void {
     this.message = [];
-    this.progressInfos = [];
     this.selectedFiles = event.target.files;
     this.previews = [];
+    this.removeAllWeightsControl();
 
     if (this.selectedFiles && this.selectedFiles[0]) {
       const numberOfFiles = this.selectedFiles.length;
@@ -59,7 +71,7 @@ export class ImagesSelectionComponent implements OnInit {
       //clear the backend directory
       this.uploadService.delete(sessionStorage.getItem("access"), layer).subscribe();
 
-      //create image previevws
+      //create image previevws and weight forms
       for (let i = 0; i < numberOfFiles; i++) {
         const reader = new FileReader();
         reader.onload = (e: any) => {
@@ -68,28 +80,44 @@ export class ImagesSelectionComponent implements OnInit {
         };
         //reads from local url
         reader.readAsDataURL(this.selectedFiles[i]);
+        //add a form
+        this.addWeightControl();   
       }
-
-    }
-    
+    } 
   }
 
-  
+  get weightForms(): FormArray {
+    return this.paramGroup.get('weightForms') as FormArray;
+  }
+
+  addWeightControl() {
+    this.weightForms.push(this.fb.control(1,null,null));
+  }
+
+  removeAllWeightsControl(){
+    this.weightForms.clear();
+  }
 
   uploadFiles(layer: string): void {
     this.message = [];
+
     if (this.selectedFiles) {
        
       for (let i = 0; i < this.selectedFiles.length; i++) {
         this.upload(i, this.selectedFiles[i], sessionStorage.getItem("access"), layer);
       }
     }
-    this.progressInfos = [];
     this.previews = [];
     this.selectedFiles = null;
+    //submit and clear the forms array
+    console.log(this.weightForms.getRawValue());
+
+    this.weights.set(layer, this.weightForms.getRawValue());
+    this.removeAllWeightsControl();
+
   }
 
-  upload(idx: number, file: File, address: string, layer: string): void {
+/*   upload(idx: number, file: File, address: string, layer: string): void {
     if (file) {
       this.uploadService.upload(file, address, layer).subscribe(
         (event: any) => {
@@ -98,7 +126,6 @@ export class ImagesSelectionComponent implements OnInit {
           } else if (event instanceof HttpResponse) {
             const msg = 'Uploaded: ' + file.name;
             this.message.push(msg);
-            //this.imageInfos = this.uploadService.getFiles();
           }
         },
         (err: any) => {
@@ -106,6 +133,22 @@ export class ImagesSelectionComponent implements OnInit {
           const msg = 'Could not upload the file: ' + file.name;
           this.message.push(msg);
         });
+    }
+  } */
+
+  upload(idx: number, file: File, address: string, layer: string): void {
+    if (file) {
+      this.uploadService.upload(file, address, layer).subscribe(
+        (event: any) => {},
+        (err: any) => {
+          const msg = 'Could not upload the file: ' + file.name;
+          this.message.push(msg);
+        },
+        () => {
+          const msg = 'Uploaded: ' + file.name;
+          this.message.push(msg);
+        });
+          
     }
   }
 
@@ -115,11 +158,15 @@ export class ImagesSelectionComponent implements OnInit {
     ObjectToConvertToTxt.numLayers = this.numLayers;
     ObjectToConvertToTxt.numNFTtoGenerate = this.numNFTtoGenerate;
     ObjectToConvertToTxt.layers = this.layers;
+    //cardinalities from map -> number list (for json compatibility)
     this.layers.forEach((value) => ObjectToConvertToTxt.cardinalities.push(this.cardinalities.get(value)));
+    //weights from map -> list of number lists (for json compatibility)
+    this.layers.forEach((value) => ObjectToConvertToTxt.weights.push(this.weights.get(value)));
 
     console.log(ObjectToConvertToTxt);
 
-    this.uploadService.configure(ObjectToConvertToTxt).subscribe();
+    this.tempConfigObj = ObjectToConvertToTxt;
+    
   }
 
 

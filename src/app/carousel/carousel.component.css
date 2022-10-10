@@ -20,15 +20,6 @@
 
 }
 
-/* .example-card {
-    max-width: 400px;
-  }
-  
-  .example-header-image {
-    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-    background-size: cover;
-  } */
-
   .final-preview{
 
     display: flex;
@@ -37,9 +28,6 @@
     padding: 4px;
   }
   .list-group-item{
-    margin:2px;
-    border:solid;
-    border-color: black;
-    border-width: 1px 1px 1px 1px;
+    margin:0px;
 
   }

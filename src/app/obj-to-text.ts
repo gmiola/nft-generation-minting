@@ -4,4 +4,5 @@ export class ObjToText {
     numNFTtoGenerate: number = 0;
     layers: string[] = [];
     cardinalities: number[] = [];
+    weights: number[][] = [];
 }
