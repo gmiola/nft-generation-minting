@@ -1,6 +1,9 @@
-This project create an easy login page to access a Metamask account and display balance.
+This project is an Angular.js app that generates and mints NFTs. Users can upload images, organizing them in layers. These images will compose our NFTs.
+Each NFT will be generated (by the back-end) chosing an image for each layer, with a distribution determined by some user defined weights (e.g. a layer could represent the hair style, and each image of the layer will be a different hair style or color).
+The back-end procedurally generates NFTs, sends them back to the UI.
+At this point the user will be able to chose whether to mint the NFTs in the blockchain, in the Polygon test net.
 
-# MetamaskBalanceApp
+# A NFT generation and minting app
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.4.
 
