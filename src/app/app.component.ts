@@ -11,7 +11,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 })
 
 export class AppComponent implements OnInit {
-  title = 'metamask-balance-app';
+  title = 'nft-generation-minting';
   
   //metamask part
   private web3: Web3 = new Web3(Web3.givenProvider);
